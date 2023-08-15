@@ -1,0 +1,37 @@
+def extract_columns_from_file():
+    file_path = "/home/coladimeji/test/storwell2/src/sheet1.txt"
+    column_A = []
+    column_B = []
+
+    with open(file_path, 'r') as file:
+        next(file) # Skip empty line
+        next(file) # Skip header
+        for line in file:
+            values = line.strip().split('\t')
+            if len(values) == 2:
+                column_A.append(int(values[0]))
+                column_B.append(values[1])
+
+    return column_A, column_B
+
+def build_mapping_dictionary(column_A, column_B):
+    return {A: B for A, B in zip(column_A, column_B)}
+
+def get_mapped_values(mapping_function_f, inputs):
+    return {input_value: mapping_function_f.get(input_value, "Not found") for input_value in inputs}
+
+# Extract columns from file
+column_A, column_B = extract_columns_from_file()
+
+# Build mapping dictionary
+mapping_function_f = build_mapping_dictionary(column_A, column_B)
+
+# Specify the inputs you want to retrieve
+inputs_to_retrieve = [30001, 55555, 77788]
+
+# Get the mapped values for the specified inputs
+outputs = get_mapped_values(mapping_function_f, inputs_to_retrieve)
+
+# Print the results
+for input_value, output in outputs.items():
+    print(f"f({input_value}) = {output}")
